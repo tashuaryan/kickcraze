@@ -51,14 +51,15 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-    // Initialize Supabase
-    const supabase = supabase.createClient('https://qryvixlfyzdaawjiryic.supabase.co', 'sb_publishable_foN7QwGkf4XsnRee0ZGNWg_LJNkna2G');
+    // Initialize Supabase (named 'db' to avoid crashing the browser library)
+    const db = window.supabase.createClient('https://qryvixlfyzdaawjiryic.supabase.co', 'sb_publishable_foN7QwGkf4XsnRee0ZGNWg_LJNkna2G');
 
     async function login() {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
 
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        // Use 'db.auth' instead of 'supabase.auth'
+        const { data, error } = await db.auth.signInWithPassword({ email, password });
         if (error) {
             alert("Login Failed: " + error.message);
         } else {
@@ -83,8 +84,8 @@
             return;
         }
 
-        // Insert into Supabase matching your frontend schema requirements
-        const { error } = await supabase.from('products').insert([{ 
+        // Use 'db.from' instead of 'supabase.from'
+        const { error } = await db.from('products').insert([{ 
             name: name,
             category: category,
             price: parseFloat(price),
